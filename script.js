@@ -46,3 +46,10 @@ document.getElementById("mintBtn").onclick = mintNFT;
 
 document.getElementById("status").innerText =
   "Connected: " + accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
+
+
+document.getElementById("status").innerHTML =
+  `NFT Minted 🎉 <br>
+   <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+   View Transaction
+   </a>`;
