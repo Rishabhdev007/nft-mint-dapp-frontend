@@ -7,10 +7,13 @@ const abi = [
   "function mintNFT() public returns (uint256)"
 ];
 
-// 🔑 PUT YOUR ETHERSCAN API KEY HERE
+// 🔑 Your API key
 const ETHERSCAN_API_KEY = "BCPHWVS8GVJFAY2YNV9ZSQCMPMSAPNP845";
 
+
+// ===============================
 // ✅ CONNECT WALLET
+// ===============================
 async function connectWallet() {
   if (!window.ethereum) {
     alert("MetaMask not detected");
@@ -29,39 +32,52 @@ async function connectWallet() {
 
     contract = new ethers.Contract(contractAddress, abi, signer);
 
+    // UI updates
     document.getElementById("status").innerText = "Wallet Connected ✅";
 
-    // Show full address
     document.getElementById("wallet").innerText =
-      "Address: " + userAddress;
+      "Address: " +
+      userAddress.slice(0, 6) +
+      "..." +
+      userAddress.slice(-4);
 
     // Load transactions
     loadTransactions();
 
   } catch (error) {
     console.error(error);
+    document.getElementById("status").innerText = "Connection Failed ❌";
   }
 }
 
-// ✅ LOAD LAST 10 TX
+
+// ===============================
+// ✅ LOAD TRANSACTIONS
+// ===============================
 async function loadTransactions() {
+  const txList = document.getElementById("txList");
+
+  txList.innerHTML = "<li>Loading...</li>";
+
   const url = `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
 
   try {
     const res = await fetch(url);
     const data = await res.json();
 
-    const txList = document.getElementById("txList");
     txList.innerHTML = "";
 
-    const txs = data.result.slice(0, 10);
+    if (!data.result || data.result.length === 0) {
+      txList.innerHTML = "<li>No transactions found</li>";
+      return;
+    }
 
-    txs.forEach(tx => {
+    data.result.slice(0, 10).forEach((tx) => {
       const li = document.createElement("li");
 
       li.innerHTML = `
         <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
-          ${tx.hash.slice(0,10)}...
+          🔗 ${tx.hash.slice(0, 12)}...
         </a>
       `;
 
@@ -70,10 +86,14 @@ async function loadTransactions() {
 
   } catch (err) {
     console.error(err);
+    txList.innerHTML = "<li>Error loading transactions ❌</li>";
   }
 }
 
+
+// ===============================
 // ✅ MINT NFT
+// ===============================
 async function mintNFT() {
   if (!contract) {
     alert("Connect wallet first");
@@ -85,19 +105,59 @@ async function mintNFT() {
 
     const tx = await contract.mintNFT();
 
+    document.getElementById("status").innerHTML = `
+      Transaction Sent 🚀 <br>
+      <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+      View on Etherscan
+      </a>
+    `;
+
     await tx.wait();
 
-    document.getElementById("status").innerText = "NFT Minted 🎉";
+    document.getElementById("status").innerHTML = `
+      NFT Minted Successfully 🎉 <br>
+      <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+      View Transaction
+      </a>
+    `;
 
-    // reload tx history
+    // Refresh transactions
     loadTransactions();
 
   } catch (error) {
     console.error(error);
-    document.getElementById("status").innerText = "Error ❌";
+
+    if (error.code === 4001) {
+      document.getElementById("status").innerText = "User Rejected ❌";
+    } else {
+      document.getElementById("status").innerText = "Mint Failed ❌";
+    }
   }
 }
 
-// EVENTS
+
+// ===============================
+// ✅ AUTO CONNECT (BONUS 🔥)
+// ===============================
+window.addEventListener("load", async () => {
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length > 0) {
+        connectWallet();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+});
+
+
+// ===============================
+// ✅ EVENTS
+// ===============================
 document.getElementById("connectBtn").onclick = connectWallet;
 document.getElementById("mintBtn").onclick = mintNFT;
