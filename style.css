@@ -5,52 +5,97 @@ body {
   color: white;
 }
 
+/* CONTAINER */
 .container {
-  max-width: 900px;
-  margin: auto;
+  max-width: 700px;
+  margin: 40px auto;
   padding: 20px;
 }
 
+/* TITLE */
 h1 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
+/* SUBTITLE */
+h2 {
+  text-align: center;
+  color: #94a3b8;
+  margin-top: 0;
+  font-weight: 400;
+}
+
+p {
+  text-align: center;
+  color: #cbd5f5;
+  margin-bottom: 20px;
+}
+
+/* CARD */
 .card {
   background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  padding: 18px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  transition: 0.3s;
 }
 
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* CARD HEADINGS */
+.card h2 {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+/* BUTTON */
 button {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border: none;
-  border-radius: 10px;
-  background: #3b82f6;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 button:hover {
-  background: #2563eb;
+  opacity: 0.9;
 }
 
+/* STATUS TEXT */
+#status, #wallet {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #cbd5f5;
+}
+
+/* TRANSACTION LIST */
 ul {
   list-style: none;
   padding: 0;
+  margin-top: 10px;
 }
 
 li {
-  margin: 8px 0;
+  margin: 6px 0;
+  font-size: 13px;
 }
 
+/* LINKS */
 a {
   color: #22c55e;
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
