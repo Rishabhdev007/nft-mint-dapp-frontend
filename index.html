@@ -2,23 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Chandan NFT Mint</title>
-  <h2>Mint Your Own NFT on Ethereum</h2>
-<p>Simple, fast and decentralized NFT minting experience.</p>
+  <title>NFT Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
 
-  <h1>🚀 Chandan NFT Collection</h1>
-  <p>Mint your NFT on Sepolia</p>
+  <h1>🚀 NFT Mint Dashboard</h1>
 
+  <!-- WALLET PANEL -->
   <div class="card">
-    <button id="connectBtn">🔌 Connect Wallet</button>
-    <button id="mintBtn">🎨 Mint NFT</button>
+    <h2>Wallet</h2>
+    <button id="connectBtn">Connect Wallet</button>
+    <p id="wallet">Not connected</p>
+  </div>
 
-    <p id="status">Status: Not connected</p>
+  <!-- MINT PANEL -->
+  <div class="card">
+    <h2>Mint NFT</h2>
+    <button id="mintBtn">Mint NFT</button>
+    <p id="status">Status: Idle</p>
+  </div>
+
+  <!-- TRANSACTION PANEL -->
+  <div class="card">
+    <h2>Recent Transactions</h2>
+    <ul id="txList"></ul>
   </div>
 
 </div>
