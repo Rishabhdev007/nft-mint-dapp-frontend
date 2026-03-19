@@ -43,3 +43,6 @@ async function mintNFT() {
 
 document.getElementById("connectBtn").onclick = connectWallet;
 document.getElementById("mintBtn").onclick = mintNFT;
+
+document.getElementById("status").innerText =
+  "Connected: " + accounts[0].slice(0,6) + "..." + accounts[0].slice(-4);
