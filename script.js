@@ -115,7 +115,14 @@ async function mintNFT() {
     await tx.wait();
 
     document.getElementById("status").innerHTML = `
-      NFT Minted Successfully 🎉 <br>
+  <div style="margin-top:10px; padding:12px; background:#0f172a; border-radius:10px;">
+    <h3>🎉 NFT Minted Successfully</h3>
+    <p>Your NFT has been created on Sepolia.</p>
+    <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+      🔗 View Transaction
+    </a>
+  </div>
+`;
       <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
       View Transaction
       </a>
