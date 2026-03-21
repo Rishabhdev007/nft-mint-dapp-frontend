@@ -32,14 +32,14 @@ async function connectWallet() {
 
     contract = new ethers.Contract(contractAddress, abi, signer);
 
-    // UI updates
+    // UI
     document.getElementById("status").innerText = "Wallet Connected ✅";
 
-    document.getElementById("wallet").innerText =
-      "Address: " +
-      userAddress.slice(0, 6) +
-      "..." +
-      userAddress.slice(-4);
+    document.getElementById("wallet").innerHTML = `
+      <span style="background:#1e293b; padding:6px 10px; border-radius:8px;">
+        🟢 ${userAddress.slice(0,6)}...${userAddress.slice(-4)}
+      </span>
+    `;
 
     // Load transactions
     loadTransactions();
@@ -57,7 +57,7 @@ async function connectWallet() {
 async function loadTransactions() {
   const txList = document.getElementById("txList");
 
-  txList.innerHTML = "<li>Loading...</li>";
+  txList.innerHTML = "<li>Loading transactions...</li>";
 
   const url = `https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${userAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
 
@@ -67,7 +67,7 @@ async function loadTransactions() {
 
     txList.innerHTML = "";
 
-    if (!data.result || data.result.length === 0) {
+    if (data.status !== "1") {
       txList.innerHTML = "<li>No transactions found</li>";
       return;
     }
@@ -108,27 +108,22 @@ async function mintNFT() {
     document.getElementById("status").innerHTML = `
       Transaction Sent 🚀 <br>
       <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
-      View on Etherscan
+        🔗 View on Etherscan
       </a>
     `;
 
     await tx.wait();
 
     document.getElementById("status").innerHTML = `
-  <div style="margin-top:10px; padding:12px; background:#0f172a; border-radius:10px;">
-    <h3>🎉 NFT Minted Successfully</h3>
-    <p>Your NFT has been created on Sepolia.</p>
-    <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
-      🔗 View Transaction
-    </a>
-  </div>
-`;
-      <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
-      View Transaction
-      </a>
+      <div style="margin-top:10px; padding:12px; background:#0f172a; border-radius:10px;">
+        <h3>🎉 NFT Minted Successfully</h3>
+        <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+          🔗 View Transaction
+        </a>
+      </div>
     `;
 
-    // Refresh transactions
+    // Refresh transactions after mint
     loadTransactions();
 
   } catch (error) {
@@ -144,7 +139,7 @@ async function mintNFT() {
 
 
 // ===============================
-// ✅ AUTO CONNECT (BONUS 🔥)
+// ✅ AUTO CONNECT
 // ===============================
 window.addEventListener("load", async () => {
   if (window.ethereum) {
